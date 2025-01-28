@@ -1,20 +1,21 @@
 import subprocess
 import os
+from dotenv import load_dotenv
 
-WORK_DIR = "/Users/kazuki/Music/GarageBand/whisper_workspace"
-AUDIO_FILE = "audio.wav"
-MODEL_PATH = "/Users/kazuki/whisper.cpp/models/ggml-medium.bin"
-OUTPUT_FILE = "transcription.txt"
+load_dotenv()
+
+WORK_DIR = os.getenv("WHISPER_DIR")
+MODEL_PATH = os.getenv("MODEL_PATH")
+WHISPER_CLI_PATH = os.getenv("WHISPER_CLI_PATH")
 
 def transcribe_audio():
-    try:
-        command = [
-            "/Users/kazuki/whisper.cpp/build/bin/whisper-cli",  # mainからwhisper-cliに変更
-            "-m", MODEL_PATH,
-            "-f", os.path.join(WORK_DIR, AUDIO_FILE),
-            "-l", "ja",
-            "-otxt"
-        ]
+    command = [
+        WHISPER_CLI_PATH,
+        "-m", MODEL_PATH,
+        "-f", os.path.join(WORK_DIR, "audio.wav"),
+        "-l", "ja",
+        "-otxt"
+    ]
 
         result = subprocess.run(
             command,
