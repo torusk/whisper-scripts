@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# 設定
-GARAGEBAND_DIR="/Users/kazuki/Music/GarageBand"
-WHISPER_DIR="/Users/kazuki/Music/GarageBand/whisper_workspace"
-TEXT_DIR="/Users/kazuki/Music/GarageBand/text"
+# 環境変数の読み込み
+source .env
+
 TODAY=$(date "+%Y:%m:%d")
 
 # textディレクトリが存在しない場合は作成
@@ -29,10 +28,10 @@ for band_dir in "$GARAGEBAND_DIR"/*"$TODAY"*.band; do
         if [ -n "$input_wav" ]; then
             # whisper_workspace直下のaudio.wavとして一時保存
             /opt/homebrew/bin/ffmpeg -i "$input_wav" \
-                                     -ar 16000 \
-                                     -ac 1 \
-                                     -c:a pcm_s16le \
-                                     "$WHISPER_DIR/audio.wav"
+                         -ar 16000 \
+                         -ac 1 \
+                         -c:a pcm_s16le \
+                         "$WHISPER_DIR/audio.wav"
             
             if [ $? -eq 0 ]; then
                 echo "音声変換完了: audio.wav"
